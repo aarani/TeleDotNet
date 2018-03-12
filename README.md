@@ -1,9 +1,5 @@
-TLSharp
+TeleDotNet
 -------------------------------
-
-[![Join the chat at https://gitter.im/TLSharp/Lobby](https://badges.gitter.im/TLSharp/Lobby.svg)](https://gitter.im/TLSharp/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Build status](https://ci.appveyor.com/api/projects/status/95rl618ch5c4h2fa?svg=true)](https://ci.appveyor.com/project/sochix/tlsharp)
-[![NuGet version](https://badge.fury.io/nu/TLSharp.svg)](https://badge.fury.io/nu/TLSharp)
 
 _Unofficial_ Telegram (http://telegram.org) client library implemented in C#. Latest TL scheme supported, thanks to Afshin Arani
 
@@ -30,19 +26,19 @@ It's a perfect fit for any developer who would like to send data directly to Tel
 Install via NuGet
 
 ```
-	> Install-Package TLSharp
+	> Install-Package TeleDotNet
 ```
 
 or build from source
 
-1. Clone TLSharp from GitHub
+1. Clone TeleDotNet from GitHub
 1. Compile source with VS2015 or MonoDevelop
-1. Add reference to ```TLSharp.Core.dll``` to your awesome project.
+1. Add reference to ```TeleDotNet.Core.dll``` to your awesome project.
 
 # Dependencies
 
-TLSharp has a few dependenices, most of functionality implemented from scratch.
-All dependencies listed in [package.conf file](https://github.com/sochix/TLSharp/blob/master/TLSharp.Core/packages.config).
+TeleDotNet has a few dependenices, most of functionality implemented from scratch.
+All dependencies listed in [package.conf file](https://github.com/sochix/TeleDotNet/blob/master/TeleDotNet.Core/packages.config).
 
 # Starter Guide
 
@@ -70,9 +66,9 @@ For authentication you need to run following code
   var user = await client.MakeAuthAsync("<user_number>", hash, code);
 ``` 
 
-Full code you can see at [AuthUser test](https://github.com/sochix/TLSharp/blob/master/TLSharp.Tests/TLSharpTests.cs#L70)
+Full code you can see at [AuthUser test](https://github.com/sochix/TeleDotNet/blob/master/TeleDotNet.Tests/TeleDotNetTests.cs#L70)
 
-When user is authenticated, TLSharp creates special file called _session.dat_. In this file TLSharp store all information needed for user session. So you need to authenticate user every time the _session.dat_ file is corrupted or removed.
+When user is authenticated, TeleDotNet creates special file called _session.dat_. In this file TeleDotNet store all information needed for user session. So you need to authenticate user every time the _session.dat_ file is corrupted or removed.
 
 You can call any method on authenticated user. For example, let's send message to a friend by his phone number:
 
@@ -90,7 +86,7 @@ You can call any method on authenticated user. For example, let's send message t
   await client.SendMessageAsync(new TLInputPeerUser() {user_id = user.id}, "OUR_MESSAGE");
 ```
 
-Full code you can see at [SendMessage test](https://github.com/sochix/TLSharp/blob/master/TLSharp.Tests/TLSharpTests.cs#L87)
+Full code you can see at [SendMessage test](https://github.com/sochix/TeleDotNet/blob/master/TeleDotNet.Tests/TeleDotNetTests.cs#L87)
 
 To send message to channel you could use the following code:
 ```csharp
@@ -106,15 +102,15 @@ To send message to channel you could use the following code:
   //send message
   await client.SendMessageAsync(new TLInputPeerChannel() { channel_id = chat.id, access_hash = chat.access_hash.Value }, "OUR_MESSAGE");
 ```
-Full code you can see at [SendMessageToChannel test](https://github.com/sochix/TLSharp/blob/master/TLSharp.Tests/TLSharpTests.cs#L107)
+Full code you can see at [SendMessageToChannel test](https://github.com/sochix/TeleDotNet/blob/master/TeleDotNet.Tests/TeleDotNetTests.cs#L107)
 ## Working with files
-Telegram separate files to two categories -> big file and small file. File is Big if its size more than 10 Mb. TLSharp tries to hide this complexity from you, thats why we provide one method to upload files **UploadFile**.
+Telegram separate files to two categories -> big file and small file. File is Big if its size more than 10 Mb. TeleDotNet tries to hide this complexity from you, thats why we provide one method to upload files **UploadFile**.
 
 ```csharp
 	var fileResult = await client.UploadFile("cat.jpg", new StreamReader("data/cat.jpg"));
 ```
 
-TLSharp provides two wrappers for sending photo and document
+TeleDotNet provides two wrappers for sending photo and document
 
 ```csharp
 	await client.SendUploadedPhoto(new TLInputPeerUser() { user_id = user.id }, fileResult, "kitty");
@@ -125,7 +121,7 @@ TLSharp provides two wrappers for sending photo and document
                 "application/zip", //mime-type
                 new TLVector<TLAbsDocumentAttribute>()); //document attributes, such as file name
 ```
-Full code you can see at [SendPhotoToContactTest](https://github.com/sochix/TLSharp/blob/master/TLSharp.Tests/TLSharpTests.cs#L125) and [SendBigFileToContactTest](https://github.com/sochix/TLSharp/blob/master/TLSharp.Tests/TLSharpTests.cs#L143)
+Full code you can see at [SendPhotoToContactTest](https://github.com/sochix/TeleDotNet/blob/master/TeleDotNet.Tests/TeleDotNetTests.cs#L125) and [SendBigFileToContactTest](https://github.com/sochix/TeleDotNet/blob/master/TeleDotNet.Tests/TeleDotNetTests.cs#L143)
 
 To download file you should call **GetFile** method
 ```csharp
@@ -139,11 +135,11 @@ To download file you should call **GetFile** method
                 document.size); //size of fileChunk you want to retrieve
 ```
 
-Full code you can see at [DownloadFileFromContactTest](https://github.com/sochix/TLSharp/blob/master/TLSharp.Tests/TLSharpTests.cs#L167)
+Full code you can see at [DownloadFileFromContactTest](https://github.com/sochix/TeleDotNet/blob/master/TeleDotNet.Tests/TeleDotNetTests.cs#L167)
 
 # Available Methods
 
-For your convenience TLSharp have wrappers for several Telegram API methods. You could add your own, see details below.
+For your convenience TeleDotNet have wrappers for several Telegram API methods. You could add your own, see details below.
 
 1. IsPhoneRegisteredAsync
 1. SendCodeRequestAsync
@@ -200,21 +196,18 @@ The latest one - 66. Thanks to Afshin Arani for his TLGenerator
 
 #### I get a xxxMigrationException or a MIGRATE_X error!
 
-TLSharp library should automatically handle these errors. If you see such errors, please open a new Github issue with the details (include a stacktrace, etc.).
+TeleDotNet library should automatically handle these errors. If you see such errors, please open a new Github issue with the details (include a stacktrace, etc.).
 
 #### I get an exception: System.IO.EndOfStreamException: Unable to read beyond the end of the stream. All test methos except that AuthenticationWorks and TestConnection return same error. I did every thing including setting api id and hash, and setting server address.-
 
 You should create a Telegram session. See [configuration guide](#sending-messages-set-up)
 
 #### Why do I get a FloodException/FLOOD_WAIT error?
-It's likely [Telegram restrictions](https://core.telegram.org/api/errors#420-flood), or a bug in TLSharp (if you feel it's the latter, please open a Github issue). You can know the time to wait by accessing the FloodException::TimeToWait property.
+It's likely [Telegram restrictions](https://core.telegram.org/api/errors#420-flood), or a bug in TeleDotNet (if you feel it's the latter, please open a Github issue). You can know the time to wait by accessing the FloodException::TimeToWait property.
 
-#### Why does TLSharp lacks feature XXXX?
+#### Why does TeleDotNet lacks feature XXXX?
 
-TLSharp only covers basic functionality of the Telegram protocol, you can be a contributor or a sponsor to speed-up developemnt of any more new features.
-
-#### Where else to ask for help?
-If you think you have found a bug in TLSharp, create a github issue. But if you just have questions about how to use TLSharp, use our gitter channel (https://gitter.im/TLSharp/Lobby) or our Telegram channel (https://t.me/joinchat/AgtDiBEqG1i-qPqttNFLbA).
+TeleDotNet only covers basic functionality of the Telegram protocol, you can be a contributor or a sponsor to speed-up developemnt of any more new features.
 
 **Attach following information**:
 
@@ -224,24 +217,14 @@ If you think you have found a bug in TLSharp, create a github issue. But if you 
 
 Without information listen above your issue will be closed. 
 
-# Donations
-Thanks for donations! It's highly appreciated. 
-<a href="https://www.paypal.me/IPirozhenko" title="Support project"><img src="https://img.shields.io/badge/Support%20project-paypal-brightgreen.svg"></a>
-
-List of donators:
-* [mtbitcoin](https://github.com/mtbitcoin)
-
-# Contributors
-* [Afshin Arani](http://aarani.ir) - TLGenerator, and a lot of other usefull things
-* [Knocte](https://github.com/knocte)
-
 # License
 
 **Please, provide link to an author when you using library**
 
 The MIT License
 
-Copyright (c) 2015 Ilya Pirozhenko http://www.sochix.ru/
+Copyright (c) 2015-2017 Ilya Pirozhenko http://www.sochix.ru/
+Copyright (c) 2017 Afshin Arani http://aarani.ir/
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
