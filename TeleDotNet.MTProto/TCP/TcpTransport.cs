@@ -52,8 +52,8 @@ namespace TeleDotNet.MTProto.TCP
             var decodedMessage = TcpMessage.Decode(_buffer.ToArray());
             _buffer.Clear();
 
-            Console.WriteLine(
-                $"Message #{decodedMessage.SequneceNumber} Received : \n {BitConverter.ToString(decodedMessage.Body).Replace("-", "")}");
+            // Console.WriteLine(
+            //    $"Message #{decodedMessage.SequneceNumber} Received : \n {BitConverter.ToString(decodedMessage.Body).Replace("-", "")}");
             _callback?.Invoke(decodedMessage);
         }
 
