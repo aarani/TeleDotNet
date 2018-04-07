@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -40,6 +41,12 @@ namespace TeleDotNet.TL
         {
             ((TLObject)obj).SerializeBody(writer);
         }
+
+        public static BigInteger DeserializeBigInteger(int count, BinaryReader reader)
+        {
+            byte[] data = reader.ReadBytes(count);
+            return new BigInteger(data);
+        }
         public static TLVector<T> DeserializeVector<T>(BinaryReader reader)
         {
             if (reader.ReadInt32() != 481674261) throw new InvalidDataException("Bad Constructor");
@@ -47,5 +54,6 @@ namespace TeleDotNet.TL
             t.DeserializeBody(reader);
             return t;
         }
+       
     }
 }

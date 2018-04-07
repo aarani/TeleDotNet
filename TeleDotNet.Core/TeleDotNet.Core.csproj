@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TeleDotNet.Core</RootNamespace>
     <AssemblyName>TeleDotNet.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -36,6 +36,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,7 +50,6 @@
     <Compile Include="Auth\Step2_DHExchange.cs" />
     <Compile Include="Auth\Step3_CompleteDHExchange.cs" />
     <Compile Include="MTProto\Crypto\AES.cs" />
-    <Compile Include="MTProto\Crypto\AuthKey.cs" />
     <Compile Include="MTProto\Crypto\BigInteger.cs" />
     <Compile Include="MTProto\Crypto\Crc32.cs" />
     <Compile Include="MTProto\Crypto\Factorizator.cs" />
@@ -57,15 +57,10 @@
     <Compile Include="MTProto\Crypto\RSA.cs" />
     <Compile Include="MTProto\Crypto\Salt.cs" />
     <Compile Include="MTProto\Serializers.cs" />
-    <Compile Include="Network\MtProtoPlainSender.cs" />
-    <Compile Include="Network\MtProtoSender.cs" />
-    <Compile Include="Network\TcpMessage.cs" />
-    <Compile Include="Network\TcpTransport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Requests\AckRequest.cs" />
     <Compile Include="Requests\PingRequest.cs" />
     <Compile Include="Utils\UploadHelper.cs" />
-    <Compile Include="Session.cs" />
     <Compile Include="TelegramClient.cs" />
     <Compile Include="Utils\Helpers.cs" />
   </ItemGroup>
@@ -73,6 +68,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TeleDotNet.MTProto\TeleDotNet.MTProto.csproj">
+      <Project>{0fbd3ff1-9153-440a-aa25-cc254a6985fe}</Project>
+      <Name>TeleDotNet.MTProto</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TeleDotNet.TL\TeleDotNet.TL.csproj">
       <Project>{d6144517-91d2-4880-86df-e9ff5d7f383a}</Project>
       <Name>TeleDotNet.TL</Name>

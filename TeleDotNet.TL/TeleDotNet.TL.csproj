@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TeleDotNet.TL</RootNamespace>
     <AssemblyName>TeleDotNet.TL</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -36,6 +36,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,6 +45,56 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ML\MLAbsBadMsgNotification.cs" />
+    <Compile Include="ML\MLAbsDestroySessionRes.cs" />
+    <Compile Include="ML\MLAbsMsgDetailedInfo.cs" />
+    <Compile Include="ML\MLAbsPQInnerData.cs" />
+    <Compile Include="ML\MLAbsRpcDropAnswer.cs" />
+    <Compile Include="ML\MLAbsServerDHParams.cs" />
+    <Compile Include="ML\MLAbsSetClientDHParamsAnswer.cs" />
+    <Compile Include="ML\MLBadMsgNotification.cs" />
+    <Compile Include="ML\MLBadServerSalt.cs" />
+    <Compile Include="ML\MLBindAuthKeyInner.cs" />
+    <Compile Include="ML\MLClientDHInnerData.cs" />
+    <Compile Include="ML\MLDestroySessionNone.cs" />
+    <Compile Include="ML\MLDestroySessionOk.cs" />
+    <Compile Include="ML\MLDhGenFail.cs" />
+    <Compile Include="ML\MLDHGenOk.cs" />
+    <Compile Include="ML\MLDhGenRetry.cs" />
+    <Compile Include="ML\MLFutureSalt.cs" />
+    <Compile Include="ML\MLFutureSalts.cs" />
+    <Compile Include="ML\MLGzipPacked.cs" />
+    <Compile Include="ML\MLMessage.cs" />
+    <Compile Include="ML\MLMsgsAck.cs" />
+    <Compile Include="ML\MLMsgsAllInfo.cs" />
+    <Compile Include="ML\MLMsgsStateInfo.cs" />
+    <Compile Include="ML\MLMsgsStateReq.cs" />
+    <Compile Include="ML\MLMsgContainer.cs" />
+    <Compile Include="ML\MLMsgCopy.cs" />
+    <Compile Include="ML\MLMsgDetailedInfo.cs" />
+    <Compile Include="ML\MLMsgNewDetailedInfo.cs" />
+    <Compile Include="ML\MLMsgResendReq.cs" />
+    <Compile Include="ML\MLNewSessionCreated.cs" />
+    <Compile Include="ML\MLPong.cs" />
+    <Compile Include="ML\MLPQInnerData.cs" />
+    <Compile Include="ML\MLPQInnerDataTemp.cs" />
+    <Compile Include="ML\MLRequestDestroySession.cs" />
+    <Compile Include="ML\MLRequestGetFutureSalts.cs" />
+    <Compile Include="ML\MLRequestPing.cs" />
+    <Compile Include="ML\MLRequestPingDelayDisconnect.cs" />
+    <Compile Include="ML\MLRequestReqDHParams.cs" />
+    <Compile Include="ML\MLRequestReqPQMulti.cs" />
+    <Compile Include="ML\MLRequestRpcDropAnswer.cs" />
+    <Compile Include="ML\MLRequestSetClientDHParams.cs" />
+    <Compile Include="ML\MLResPQ.cs" />
+    <Compile Include="ML\MLRpcAnswerDropped.cs" />
+    <Compile Include="ML\MLRpcAnswerDroppedRunning.cs" />
+    <Compile Include="ML\MLRpcAnswerUnknown.cs" />
+    <Compile Include="ML\MLRpcError.cs" />
+    <Compile Include="ML\MLRpcResult.cs" />
+    <Compile Include="ML\MLServerDHInnerData.cs" />
+    <Compile Include="ML\MLServerDHParamsFail.cs" />
+    <Compile Include="ML\MLServerDHParamsOk.cs" />
     <Compile Include="ObjectDeserializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TLContext.cs" />
