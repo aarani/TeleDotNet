@@ -10,7 +10,8 @@ WIP
  5. Rewrite RSA Helper (Origin : TLSHARP)
  6. Storing Session as JSON
  7. Let User Add Callback for all UPDATES (not only with constructors)
-  
+ 8. Rewrite Test Projects
+ 9. Rewrite Authentication Protocol (in Progress..)
 
 ## Changelist ( after TLSHARP )
 
