@@ -22,20 +22,28 @@ namespace TeleDotNet.MTProto.TCP
             _socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
             _socket.Connect(address, port);
 
-            new Thread(() => { 
+            new Thread(() =>
+            {
+                while (true)
+                {
                     var buffer = new byte[1024];
                     var bytesReceived = 0;
-                    
-                    while ((bytesReceived = _socket.Receive(buffer)) > 0)
+                    try
                     {
-                        _buffer.AddRange(buffer.ToList().GetRange(0, bytesReceived));
-                        
-                        if (_buffer.ToArray().Length > 0)
+                        while ((bytesReceived = _socket.Receive(buffer)) > 0)
                         {
-                            DecodePacket();
+                            _buffer.AddRange(buffer.ToList().GetRange(0, bytesReceived));
+                            _socket.ReceiveTimeout = 100;
                         }
-                        
                     }
+                    catch (SocketException ex)
+                    {
+                    }
+
+                    DecodePacket();
+
+                    _socket.ReceiveTimeout = 0;
+                }
             }).Start();
         }
 
@@ -49,7 +57,7 @@ namespace TeleDotNet.MTProto.TCP
             new Thread(() =>
             {
                 _callback?.Invoke(decodedMessage);
-            }).Start();
+            });
         }
 
         public void SetCallback(PacketReceivedCallback callback)
