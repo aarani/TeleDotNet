@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Security.Cryptography;
-using BigMath;
+using TeleDotNet.MTProto.Crypto;
 
 namespace TeleDotNet.MTProto
 {
