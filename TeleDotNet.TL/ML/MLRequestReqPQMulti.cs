@@ -1,7 +1,6 @@
 using System.IO;
 using System.Numerics;
 
-
 namespace TeleDotNet.TL.ML
 {
     [TLObject(1615239032)]
@@ -9,7 +8,7 @@ namespace TeleDotNet.TL.ML
     {
         public override int Constructor => 1615239032;
 
-        public System.Numerics.BigInteger Nonce { get; set; }
+        public BigInteger Nonce { get; set; }
         public MLResPq Response { get; set; }
 
 

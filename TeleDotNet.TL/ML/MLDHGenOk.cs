@@ -1,5 +1,5 @@
 using System.IO;
-using BigMath;
+using System.Numerics;
 
 namespace TeleDotNet.TL.ML
 {
@@ -8,9 +8,9 @@ namespace TeleDotNet.TL.ML
     {
         public override int Constructor => 1003222836;
 
-        public System.Numerics.BigInteger Nonce { get; set; }
-        public System.Numerics.BigInteger ServerNonce { get; set; }
-        public System.Numerics.BigInteger NewNonceHash1 { get; set; }
+        public BigInteger Nonce { get; set; }
+        public BigInteger ServerNonce { get; set; }
+        public BigInteger NewNonceHash1 { get; set; }
 
 
         public void ComputeFlags()

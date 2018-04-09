@@ -1,5 +1,5 @@
 using System.IO;
-using BigMath;
+using System.Numerics;
 
 namespace TeleDotNet.TL.ML
 {
@@ -11,9 +11,9 @@ namespace TeleDotNet.TL.ML
         public byte[] PQ { get; set; }
         public byte[] P { get; set; }
         public byte[] Q { get; set; }
-        public System.Numerics.BigInteger Nonce { get; set; }
-        public System.Numerics.BigInteger ServerNonce { get; set; }
-        public System.Numerics.BigInteger NewNonce { get; set; }
+        public BigInteger Nonce { get; set; }
+        public BigInteger ServerNonce { get; set; }
+        public BigInteger NewNonce { get; set; }
         public int ExpiresIn { get; set; }
 
 
