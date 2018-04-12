@@ -6,31 +6,32 @@ namespace TeleDotNet.MTProto.Crypto
 {
     public static class CryptoUtils
     {
-        public static byte[] CalculateMessageKey(byte[] data)
+        public static byte[] CalculateMessageKey(byte[] data,byte[] sharedKey)
         {
-            return SHA256(data).Skip(64).Take(128).ToArray();
+            var x = 0;
+            var sharedKeyList = sharedKey.ToList();
+
+            var msgKeyLarge =
+                SHA256(sharedKeyList.GetRange(88 + x, 32).Concat(data).ToArray())
+                    .ToList(); //msg_key_large = SHA256 (substr (auth_key, 88+x, 32) + plaintext + random_padding);
+            return msgKeyLarge.GetRange(8, 16).ToArray(); //msg_key = substr (msg_key_large, 8, 16);
+            
         }
 
-        public static AESKeyData CalculateAesData(byte[] data, byte[] sharedKey, byte[] msgKey, bool client)
+        public static AESKeyData CalculateAesData(byte[] sharedKey, byte[] msgKey, bool client)
         {
             //TODO : Need Optimization
 
             var x = client ? 0 : 8;
-            var buffer = new byte[48];
 
             var sharedKeyList = sharedKey.ToList();
 
-            var msg_key_large =
-                SHA256(sharedKeyList.GetRange(88 + x, 32).ToArray()).Concat(data)
-                    .ToList(); //msg_key_large = SHA256 (substr (auth_key, 88+x, 32) + plaintext + random_padding);
-            var msg_key = msg_key_large.GetRange(8, 16); //msg_key = substr (msg_key_large, 8, 16);
-
-            var sha256_a = SHA256(msg_key.Concat(sharedKeyList.GetRange(x, 36)).ToArray()).ToList();
-            var sha256_b = SHA256(sharedKeyList.GetRange(40 + x, 36).Concat(msg_key).ToArray()).ToList();
+            var sha256A = SHA256(msgKey.Concat(sharedKeyList.GetRange(x, 36)).ToArray()).ToList();
+            var sha256B = SHA256(sharedKeyList.GetRange(40 + x, 36).Concat(msgKey).ToArray()).ToList();
 
             return new AESKeyData(
-                sha256_a.GetRange(0, 8).Concat(sha256_b.GetRange(8, 16)).Concat(sha256_a.GetRange(24, 8)).ToArray(),
-                sha256_b.GetRange(0, 8).Concat(sha256_a.GetRange(8, 16)).Concat(sha256_b.GetRange(24, 8)).ToArray());
+                sha256A.GetRange(0, 8).Concat(sha256B.GetRange(8, 16)).Concat(sha256A.GetRange(24, 8)).ToArray(),
+                sha256B.GetRange(0, 8).Concat(sha256A.GetRange(8, 16)).Concat(sha256B.GetRange(24, 8)).ToArray());
         }
 
         public static byte[] Align(byte[] src, int factor)
@@ -46,6 +47,22 @@ namespace TeleDotNet.MTProto.Crypto
             return src.Concat(paddingBytes).ToArray();
         }
 
+        public static byte[] AlignZeroToFifteen(byte[] src, int factor)
+        {
+            var random = new Random();
+            
+            if (src.Length % factor == 0)
+            {
+                return src;
+            }
+            
+            var padding = factor - src.Length % factor;
+
+            var paddingBytes = new byte[padding];
+            random.NextBytes(paddingBytes);
+
+            return src.Concat(paddingBytes).ToArray();
+        }
         public static byte[] SHA256(byte[] data)
         {
             using (SHA256 sha256 = new SHA256Managed())
