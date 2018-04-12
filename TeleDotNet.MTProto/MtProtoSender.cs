@@ -58,7 +58,35 @@ namespace TeleDotNet.MTProto
                         _callbacks[(Object as TLObject).Constructor](Object as TLObject);
                     }
                 }
-                
+                else
+                {
+                    byte[] msgKey = binaryReader.ReadBytes(16);
+                    AESKeyData keyData = CryptoUtils.CalculateAesData(_session.AuthKey.Data , msgKey, false);
+
+                    byte[] plaintext = AES.DecryptAES(keyData, binaryReader.ReadBytes((int)(memStream.Length - memStream.Position)));
+                    using (MemoryStream plaintextStream = new MemoryStream(plaintext))
+                    using (BinaryReader plaintextReader = new BinaryReader(plaintextStream))
+                    {
+                        var remoteSalt = plaintextReader.ReadUInt64();
+                        var remoteSessionId = plaintextReader.ReadUInt64();
+                        var remoteMessageId = plaintextReader.ReadUInt64();
+                        var remoteSequence = plaintextReader.ReadInt32();
+                        int dataLength = plaintextReader.ReadInt32();
+                        if (plaintextStream.Length - plaintextStream.Position >= dataLength)
+                        {
+                            Object = ObjectUtils.DeserializeObject(plaintextReader);
+                            //DECODE PACKAGE AND HANDLE IT
+                        }
+                        else
+                        {
+                            throw new InvalidOperationException("Oops! Incomplete packet detected. Skip!");
+                        }
+                        if (_callbacks.ContainsKey((Object as TLObject).Constructor))
+                        {
+                            _callbacks[(Object as TLObject).Constructor](Object as TLObject);
+                        }
+                    }
+                }
                 
             }
         }
@@ -88,7 +116,8 @@ namespace TeleDotNet.MTProto
                 var messageId = _session.GetNewMessageId();
 
                 byte[] alignedData;
-                using (var plaintextPacket = MakeMemory(8 + 8 + 8 + 4 + 4 + packet.Length))
+                byte[] paddedData = CryptoUtils.Align(packet, 16);
+                using (var plaintextPacket = MakeMemory(8 + 8 + 8 + 4 + 4 + paddedData.Length))
                 {
                     using (var plaintextWriter = new BinaryWriter(plaintextPacket))
                     {
@@ -97,18 +126,15 @@ namespace TeleDotNet.MTProto
                         plaintextWriter.Write(messageId);
                         plaintextWriter.Write(GenerateSequence(!request.GetType().Name.StartsWith("ML")));
                         plaintextWriter.Write(packet.Length);
-                        plaintextWriter.Write(packet);
-
-                        alignedData = CryptoUtils.Align(plaintextPacket.GetBuffer(), 16);
+                        plaintextWriter.Write(paddedData);
+                        
+                        alignedData = plaintextPacket.GetBuffer();
                     }
                 }
 
-                var last32 = new byte[32];
-                Array.Copy(_session.AuthKey.Data, _session.AuthKey.Data.Length - 32, last32, 0, 32);
-
-                var msgKey = CryptoUtils.CalculateMessageKey(last32.Concat(alignedData).ToArray());
+                var msgKey = CryptoUtils.CalculateMessageKey(alignedData,_session.AuthKey.Data);
                 var ciphertext =
-                    AES.EncryptAES(CryptoUtils.CalculateAesData(alignedData, _session.AuthKey.Data, msgKey, true),
+                    AES.EncryptAES(CryptoUtils.CalculateAesData(_session.AuthKey.Data, msgKey, true),
                         alignedData);
 
                 using (var ciphertextPacket = MakeMemory(8 + 16 + ciphertext.Length))
