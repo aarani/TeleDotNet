@@ -52,12 +52,12 @@ namespace TeleDotNet.MTProto.TCP
             var decodedMessage = TcpMessage.Decode(_buffer.ToArray());
             _buffer.Clear();
 
-            // Console.WriteLine(
-            //    $"Message #{decodedMessage.SequneceNumber} Received : \n {BitConverter.ToString(decodedMessage.Body).Replace("-", "")}");
+            //Console.WriteLine(
+            //   $"Message #{decodedMessage.SequneceNumber} Received : \n {BitConverter.ToString(decodedMessage.Body).Replace("-", "")}");
             new Thread(() =>
             {
                 _callback?.Invoke(decodedMessage);
-            });
+            }).Start();
         }
 
         public void SetCallback(PacketReceivedCallback callback)
@@ -71,7 +71,9 @@ namespace TeleDotNet.MTProto.TCP
                 throw new InvalidOperationException("Client not connected to server.");
 
             var tcpMessage = new TcpMessage(_seqNo, data);
-
+            Console.WriteLine(
+                $"Message #{_seqNo} Sent : \n {BitConverter.ToString(data).Replace("-", "")}");
+            
             _socket.Send(tcpMessage.Encode());
             _seqNo++;
         }
